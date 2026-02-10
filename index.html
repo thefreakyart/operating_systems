@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --accent: #38bdf8;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #020617, var(--bg));
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      padding: 40px 20px 80px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+    }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    .tile {
+      background: radial-gradient(circle at top, #1f2933, var(--card));
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .tile:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      border-color: var(--accent);
+    }
+
+    .tile.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent), 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .content.active {
+      display: block;
+    }
+
+    .content h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .faq-item {
+      background: rgba(255,255,255,0.03);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .faq-item h3 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+    }
+
+    .faq-item p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .faq-item img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-top: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>FAQ</h1>
+
+    <div class="tiles">
+      <div class="tile" data-target="crm">CRM</div>
+      <div class="tile" data-target="welyo">Welyo</div>
+      <div class="tile" data-target="jira">Jira</div>
+      <div class="tile" data-target="zimbra">Zimbra</div>
+    </div>
+
+    <div id="crm" class="content">
+      <h2>CRM</h2>
+      <div class="faq-item">
+        <h3>Przykładowy problem</h3>
+        <p>Tu wpiszesz rozwiązanie problemu. Możesz używać Markdown albo zwykłego HTML.</p>
+        <img src="images/crm-przyklad.png" alt="Przykład CRM" />
+      </div>
+    </div>
+
+    <div id="welyo" class="content">
+      <h2>Welyo</h2>
+      <div class="faq-item">
+        <h3>Problem Welyo</h3>
+        <p>Opis rozwiązania…</p>
+      </div>
+    </div>
+
+    <div id="jira" class="content">
+      <h2>Jira</h2>
+      <div class="faq-item">
+        <h3>Błąd w Jira</h3>
+        <p>Opis rozwiązania…</p>
+      </div>
+    </div>
+
+    <div id="zimbra" class="content">
+      <h2>Zimbra</h2>
+      <div class="faq-item">
+        <h3>Problem z pocztą</h3>
+        <p>Opis rozwiązania…</p>
+      </div>
+    </div>
+
+    <footer>
+      FAQ • wersja statyczna • idealna pod GitHub Pages
+    </footer>
+  </div>
+
+  <script>
+    const tiles = document.querySelectorAll('.tile');
+    const contents = document.querySelectorAll('.content');
+
+    tiles.forEach(tile => {
+      tile.addEventListener('click', () => {
+        const target = tile.dataset.target;
+
+        tiles.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+
+        tile.classList.add('active');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
