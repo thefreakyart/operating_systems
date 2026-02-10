@@ -36,8 +36,29 @@
     h1 {
       text-align: center;
       font-size: 3rem;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       letter-spacing: 2px;
+    }
+
+    .search {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .search input {
+      width: 100%;
+      max-width: 500px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .search input::placeholder {
+      color: var(--muted);
     }
 
     .tiles {
@@ -86,23 +107,48 @@
     .faq-item {
       background: rgba(255,255,255,0.03);
       border-radius: 14px;
-      padding: 20px;
       margin-bottom: 16px;
       border: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
     }
 
-    .faq-item h3 {
-      margin: 0 0 10px;
-      font-size: 1.2rem;
+    .faq-question {
+      padding: 18px 20px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .faq-item p {
-      margin: 0 0 12px;
+    .faq-question span {
+      color: var(--accent);
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-question span {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      padding: 0 20px;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 800px;
+      padding: 0 20px 20px;
+    }
+
+    .faq-answer p {
+      margin: 12px 0;
       color: var(--muted);
       line-height: 1.6;
     }
 
-    .faq-item img {
+    .faq-answer img {
       max-width: 100%;
       border-radius: 12px;
       margin-top: 10px;
@@ -126,6 +172,10 @@
   <div class="container">
     <h1>FAQ</h1>
 
+    <div class="search">
+      <input type="text" id="searchInput" placeholder="Szukaj w FAQ..." />
+    </div>
+
     <div class="tiles">
       <div class="tile" data-target="crm">CRM</div>
       <div class="tile" data-target="welyo">Welyo</div>
@@ -136,33 +186,41 @@
     <div id="crm" class="content">
       <h2>CRM</h2>
       <div class="faq-item">
-        <h3>Przykładowy problem</h3>
-        <p>Tu wpiszesz rozwiązanie problemu. Możesz używać Markdown albo zwykłego HTML.</p>
-        <img src="images/crm-przyklad.png" alt="Przykład CRM" />
+        <div class="faq-question">Przykładowy problem <span>+</span></div>
+        <div class="faq-answer">
+          <p>Tu wpiszesz rozwiązanie problemu. Możesz używać zwykłego HTML.</p>
+          <img src="images/crm-przyklad.png" alt="Przykład CRM" />
+        </div>
       </div>
     </div>
 
     <div id="welyo" class="content">
       <h2>Welyo</h2>
       <div class="faq-item">
-        <h3>Problem Welyo</h3>
-        <p>Opis rozwiązania…</p>
+        <div class="faq-question">Problem Welyo <span>+</span></div>
+        <div class="faq-answer">
+          <p>Opis rozwiązania…</p>
+        </div>
       </div>
     </div>
 
     <div id="jira" class="content">
       <h2>Jira</h2>
       <div class="faq-item">
-        <h3>Błąd w Jira</h3>
-        <p>Opis rozwiązania…</p>
+        <div class="faq-question">Błąd w Jira <span>+</span></div>
+        <div class="faq-answer">
+          <p>Opis rozwiązania…</p>
+        </div>
       </div>
     </div>
 
     <div id="zimbra" class="content">
       <h2>Zimbra</h2>
       <div class="faq-item">
-        <h3>Problem z pocztą</h3>
-        <p>Opis rozwiązania…</p>
+        <div class="faq-question">Problem z pocztą <span>+</span></div>
+        <div class="faq-answer">
+          <p>Opis rozwiązania…</p>
+        </div>
       </div>
     </div>
 
@@ -174,6 +232,7 @@
   <script>
     const tiles = document.querySelectorAll('.tile');
     const contents = document.querySelectorAll('.content');
+    const searchInput = document.getElementById('searchInput');
 
     tiles.forEach(tile => {
       tile.addEventListener('click', () => {
@@ -184,9 +243,27 @@
 
         tile.classList.add('active');
         document.getElementById(target).classList.add('active');
+        searchInput.value = '';
+        filterFaq('');
       });
     });
+
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('active');
+      });
+    });
+
+    searchInput.addEventListener('input', e => {
+      filterFaq(e.target.value.toLowerCase());
+    });
+
+    function filterFaq(query) {
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const text = item.innerText.toLowerCase();
+        item.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
   </script>
 </body>
 </html>
-
